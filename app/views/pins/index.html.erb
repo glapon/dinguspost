@@ -1,7 +1,7 @@
 <div class="panel panel-default">
   
   <div class="panel-heading">
-    <h1>Listing pins</h1>
+    <h1>Pins</h1>
   </div>
   
   <div class="panel-body">
@@ -9,7 +9,8 @@
       <thead>
         <tr>
           <th>Description</th>
-          <th colspan="3"></th>
+          <th>User</th>
+          <th colspan="2"></th>
         </tr>
       </thead>
 
@@ -17,9 +18,12 @@
         <% @pins.each do |pin| %>
           <tr>
             <td><%= pin.description %></td>
+            <td><center><%= pin.user.email if pin.user %></center></td>
             <td><%= link_to 'Show', pin %></td>
-            <td><%= link_to 'Edit', edit_pin_path(pin) %></td>
-            <td><%= link_to 'Destroy', pin, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% if pin.user == current_user && pin.user.nil? == false %>
+              <td><%= link_to 'Edit', edit_pin_path(pin) %></td>
+              <td><%= link_to 'Destroy', pin, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
@@ -29,6 +33,8 @@
   <br>
 
   <div class="panel-footer">
-    <%= link_to 'New Pin', new_pin_path %>
+    <% if user_signed_in? %>
+      <%= link_to 'New Pin', new_pin_path %>
+    <% end %>
   </div>
 </div>
